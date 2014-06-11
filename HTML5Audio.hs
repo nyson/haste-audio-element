@@ -1,3 +1,10 @@
+{-# LANGUAGE GADTs #-}
+
+{- {-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls, GADTs,
+             FlexibleInstances, OverloadedStrings, CPP, MultiParamTypeClasses,
+             TypeFamilies, FlexibleContexts #-} -}
+
+
 {-
 JavaScript HTML5 bindings for the <audio> element
 -}
@@ -7,6 +14,30 @@ module HTML5Audio where
 import Haste
 import Data.Maybe
 
+data MediaEvent m a where
+  Abort          :: MediaEvent m (m ())
+  CanPlay        :: MediaEvent m (m ())
+  CanPlayThrough :: MediaEvent m (m ())
+  DurationChange :: MediaEvent m (m ())
+  Emptied        :: MediaEvent m (m ())
+  Ended          :: MediaEvent m (m ())
+  MediaError     :: MediaEvent m (m ())
+  LoadedData     :: MediaEvent m (m ())
+  LoadedMetaData :: MediaEvent m (m ())
+  LoadStart      :: MediaEvent m (m ())
+  Pause          :: MediaEvent m (m ())
+  Play           :: MediaEvent m (m ())
+  Playing        :: MediaEvent m (m ())
+  Progress       :: MediaEvent m (m ())
+  RateChange     :: MediaEvent m (m ())
+  Seeked         :: MediaEvent m (m ())
+  Seeking        :: MediaEvent m (m ())
+  Stalled        :: MediaEvent m (m ())
+  Suspend        :: MediaEvent m (m ())
+  TimeUpdate     :: MediaEvent m (m ())
+  VolumeChange   :: MediaEvent m (m ())
+  Waiting        :: MediaEvent m (m ())
+
 type AudioElem = Elem
 
 -- Media Object Methods ------------------------------------------------------
@@ -14,7 +45,7 @@ type AudioElem = Elem
 Checks if a mime type string should be able to play
 -}
 canProbablyPlayType :: String -> Bool
-canProbablyPlayType = case canPlayType t of
+canProbablyPlayType t = case canPlayType t of
   Just True -> True
   _         -> False
 
@@ -24,7 +55,7 @@ will also consider maybe playable formats; formats which are impossible to
 tell before playing it (certain forms of containers etc).
 -}
 canMaybePlayType :: String -> Bool
-canMaybePlayType = case canPlayType t of
+canMaybePlayType t = case canPlayType t of
   Nothing -> True
   Just x  -> x
 
@@ -60,5 +91,6 @@ Pauses playing media, or unpauses paused media
 -}
 pause :: AudioElem -> IO ()
 pause = undefined
+
 
 
