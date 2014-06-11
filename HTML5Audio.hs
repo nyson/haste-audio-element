@@ -35,6 +35,7 @@ data MediaEvent m a where
 
 type AudioElem = Elem
 data CanPlay = No | Indeterminable | Probably
+             deriving (Eq, Ord)
 
 -- Media Object Methods ------------------------------------------------------
 {-
