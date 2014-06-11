@@ -1,10 +1,5 @@
 {-# LANGUAGE GADTs #-}
 
-{- {-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls, GADTs,
-             FlexibleInstances, OverloadedStrings, CPP, MultiParamTypeClasses,
-             TypeFamilies, FlexibleContexts #-} -}
-
-
 {-
 JavaScript HTML5 bindings for the <audio> element
 -}
@@ -39,39 +34,14 @@ data MediaEvent m a where
   Waiting        :: MediaEvent m (m ())
 
 type AudioElem = Elem
+data CanPlay = No | Indeterminable | Probably
 
 -- Media Object Methods ------------------------------------------------------
-{-
-Checks if a mime type string should be able to play
--}
-canProbablyPlayType :: String -> Bool
-canProbablyPlayType t = case canPlayType t of
-  Just True -> True
-  _         -> False
-
-{-
-Checks a mime type string should be able to play. This check
-will also consider maybe playable formats; formats which are impossible to
-tell before playing it (certain forms of containers etc).
--}
-canMaybePlayType :: String -> Bool
-canMaybePlayType t = case canPlayType t of
-  Nothing -> True
-  Just x  -> x
-
-{-
-Checks if a mime type string shouldn't be able to play
--}
-canNotPlayType :: String -> Bool
-canNotPlayType t = case canPlayType t of
-  Just False -> True
-  _          -> False
-  
 {-
 Checks if a mime type string should be able to play; Nothing means that it
 can't be decided until the file loads
 -}
-canPlayType :: String -> Maybe Bool
+canPlayType :: String -> CanPlay
 canPlayType = undefined
 
 {-
